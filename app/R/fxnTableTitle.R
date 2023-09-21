@@ -1,14 +1,26 @@
 # fxnTableTitle: Build title for HTML table based on user input
 # 
-# @param: stationName - AZMet station selected by user
+# @param: azmetStation - AZMet station selected by user
 # @param: annualCrop - annual crop selected by user
-# @return: tableTitle - table title for HTML table based on user input
+# @return: tableTitle - title for HTML table based on user input
 
 
 fxnTableTitle <- function(azmetStation, annualCrop) {
-  tableTitle <- h4(htmltools::HTML(
-    paste("Preview of", stringr::str_to_title(annualCrop), "Data from the AZMet", azmetStation, "station", sep = " ")
-  ))
+  tableTitle <- 
+    htmltools::h4(
+      htmltools::HTML(
+        paste(
+          "Water Use Estimates from the AZMet",
+          azmetStation,
+          "station for",
+          stringr::str_to_title(annualCrop), 
+          
+          sep = " "
+        )
+      ), 
+      
+      class = "table-title"
+    )
   
   return(tableTitle)
 }

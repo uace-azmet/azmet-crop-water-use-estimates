@@ -85,16 +85,20 @@ ui <- htmltools::htmlTemplate(
       
       fluidRow(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableTitle"))
-      ), 
+      ),
+      
+      fluidRow(
+        column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableSubtitle"))
+      ),
       
       br(),
       #fluidRow(
       #  column(width = 11, align = "left", offset = 1, tableOutput(outputId = "dataTablePreview"))
       #), 
       
-      #fluidRow(
-      #  column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableFooter"))
-      #),
+      fluidRow(
+        column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableCaption"))
+      ),
       
       #br(),
       #fluidRow(
@@ -102,9 +106,9 @@ ui <- htmltools::htmlTemplate(
       #),
       
       br(), br(),
-      #fluidRow(
-      #  column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableCaption"))
-      #),
+      fluidRow(
+        column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableFooter"))
+      ),
       br()
     ) # mainPanel()
   ) # sidebarLayout()
@@ -117,6 +121,26 @@ server <- function(input, output, session) {
   
   # Reactive events -----
   
+  # Build table caption
+  tableCaption <- eventReactive(input$estimateWaterUse, {
+    tableCaption <- fxnTableCaption(
+      azmetStation = input$azmetStation,
+      annualCrop = input$annualCrop
+    )
+  })
+  
+  # Build table footer
+  tableFooter <- eventReactive(input$estimateWaterUse, {
+    tableFooter <- fxnTableFooter(
+      annualCrop = input$annualCrop
+    )
+  })
+  
+  # Build table subtitle
+  tableSubtitle <- eventReactive(input$estimateWaterUse, {
+    tableSubtitle <- fxnTableSubtitle()
+  })
+  
   # Build table title
   tableTitle <- eventReactive(input$estimateWaterUse, {
     tableTitle <- fxnTableTitle(
@@ -126,6 +150,18 @@ server <- function(input, output, session) {
   })
   
   # Outputs -----
+  
+  output$tableCaption <- renderUI({
+    tableCaption()
+  })
+  
+  output$tableFooter <- renderUI({
+    tableFooter()
+  })
+  
+  output$tableSubtitle <- renderUI({
+    tableSubtitle()
+  })
   
   output$tableTitle <- renderUI({
     tableTitle()

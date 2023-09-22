@@ -121,6 +121,34 @@ server <- function(input, output, session) {
   
   # Reactive events -----
   
+  # AZMet data ELT
+  azmetData <- eventReactive(input$estimateWaterUse, {
+    idPreview <- showNotification(
+      ui = "Estimating water use . . .", 
+      action = NULL, 
+      duration = NULL, 
+      closeButton = FALSE,
+      id = "idPreview",
+      type = "message"
+    )
+    
+    on.exit(removeNotification(id = idPreview), add = TRUE)
+    
+    fxnAZMetDataELT(
+      station = input$station, 
+      timeStep = "Daily", 
+      startDate = input$plantingDate, 
+      endDate = Sys.Date() - 1 #input$endDate
+    )
+  })
+  
+  # Total growing season length in days for specified crop based on FAO model, `cropGrowingSeasonLengths` loaded into environment by `scr01SetupApp.R`
+  growingSeasonLength <- reactive({
+    cropGrowingSeasonLengths$growingSeasonLength[
+      which(cropGrowingSeasonLengths$crop == input$annualCrop)
+    ]
+  })
+  
   # Build table caption
   tableCaption <- eventReactive(input$estimateWaterUse, {
     tableCaption <- fxnTableCaption(
@@ -132,21 +160,21 @@ server <- function(input, output, session) {
   # Build table footer
   tableFooter <- eventReactive(input$estimateWaterUse, {
     tableFooter <- fxnTableFooter(
-      annualCrop = input$annualCrop
+      annualCrop = input$annualCrop,
+      plantingDate = input$plantingDate,
+      endDate = Sys.Date() - 1, #input$endDate
+      growingSeasonLength = growingSeasonLength
     )
   })
   
   # Build table subtitle
   tableSubtitle <- eventReactive(input$estimateWaterUse, {
-    tableSubtitle <- fxnTableSubtitle()
+    tableSubtitle <- fxnTableSubtitle(azmetStation = input$azmetStation)
   })
   
   # Build table title
   tableTitle <- eventReactive(input$estimateWaterUse, {
-    tableTitle <- fxnTableTitle(
-      azmetStation = input$azmetStation,
-      annualCrop = input$annualCrop
-    )
+    tableTitle <- fxnTableTitle(annualCrop = input$annualCrop)
   })
   
   # Outputs -----

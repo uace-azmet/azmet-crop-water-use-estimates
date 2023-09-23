@@ -39,7 +39,7 @@ ui <- htmltools::htmlTemplate(
       
       verticalLayout(
         helpText(em(
-          "Select an AZMet station, crop, and planting date. Then, click or tap 'Estimate Water Use'."
+          "Select an AZMet station, specify the crop, and set the planting and end dates for the period of interest. Then, click or tap 'Estimate Water Use'."
         )),
         
         br(),
@@ -62,6 +62,19 @@ ui <- htmltools::htmlTemplate(
           label = "Planting Date",
           value = Sys.Date() - 7,
           min = lubridate::today() - lubridate::years(1),
+          max = Sys.Date() - 2,
+          format = "MM d, yyyy",
+          startview = "month",
+          weekstart = 0, # Sunday
+          width = "100%",
+          autoclose = TRUE
+        ),
+        
+        dateInput(
+          inputId = "endDate",
+          label = "End Date",
+          value = Sys.Date() - 1,
+          min = lubridate::today() - lubridate::years(1) + 1,
           max = Sys.Date() - 1,
           format = "MM d, yyyy",
           startview = "month",
@@ -92,20 +105,25 @@ ui <- htmltools::htmlTemplate(
       ),
       
       br(),
-      #fluidRow(
-      #  column(width = 11, align = "left", offset = 1, tableOutput(outputId = "dataTablePreview"))
-      #), 
+      fluidRow(
+        column(width = 11, align = "left", offset = 1, tableOutput(outputId = "dataTablePreview"))
+      ), 
       
       fluidRow(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableCaption"))
       ),
       
       #br(),
-      #fluidRow(
-      #  column(width = 11, align = "left", offset = 1, uiOutput(outputId = "downloadButtonTSV"))
-      #),
+      fluidRow(
+        column(width = 11, align = "left", offset = 1, uiOutput(outputId = "downloadButtonTSV"))
+      ),
       
       br(), br(),
+      fluidRow(
+        column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableFooterHelpText"))
+      ),
+      
+      br(),
       fluidRow(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableFooter"))
       ),
@@ -122,7 +140,7 @@ server <- function(input, output, session) {
   # Reactive events -----
   
   # AZMet data ELT
-  azmetData <- eventReactive(input$estimateWaterUse, {
+  dAZMetDataELT <- eventReactive(input$estimateWaterUse, {
     idPreview <- showNotification(
       ui = "Estimating water use . . .", 
       action = NULL, 
@@ -135,11 +153,27 @@ server <- function(input, output, session) {
     on.exit(removeNotification(id = idPreview), add = TRUE)
     
     fxnAZMetDataELT(
-      station = input$station, 
+      azmetStation = input$azmetStation, 
       timeStep = "Daily", 
       startDate = input$plantingDate, 
-      endDate = Sys.Date() - 1 #input$endDate
+      endDate = input$endDate
     )
+  })
+  
+  # Calculate accumulation values, crop water use estimates
+  dCalculateETc <- eventReactive(dAZMetDataELT(), {
+    fxnCalculateETc(
+      dAZMetDataELT = dAZMetDataELT(),
+      annualCrop = input$annualCrop,
+      growingSeasonLength = growingSeasonLength()
+    )
+  })
+  
+  # Format AZMet data for HTML table preview
+  dAZMetDataPreview <- eventReactive(dCalculateETc(), {
+    fxnAZMetDataPreview(
+      dCalculateETc = dCalculateETc(),
+      timeStep = "Daily")
   })
   
   # Total growing season length in days for specified crop based on FAO model, `cropGrowingSeasonLengths` loaded into environment by `scr01SetupApp.R`
@@ -162,9 +196,15 @@ server <- function(input, output, session) {
     tableFooter <- fxnTableFooter(
       annualCrop = input$annualCrop,
       plantingDate = input$plantingDate,
-      endDate = Sys.Date() - 1, #input$endDate
-      growingSeasonLength = growingSeasonLength
+      endDate = input$endDate,
+      growingSeasonLength = growingSeasonLength()
     )
+  })
+  
+  # Build table footer help text
+  output$tableFooterHelpText <- renderUI({
+    req(dAZMetDataELT())
+    helpText(em("Scroll down over the following text to view additional information."))
   })
   
   # Build table subtitle
@@ -178,6 +218,34 @@ server <- function(input, output, session) {
   })
   
   # Outputs -----
+  
+  output$dataTablePreview <- renderTable(
+    expr = dAZMetDataPreview(), 
+    striped = TRUE, 
+    hover = TRUE, 
+    bordered = FALSE, 
+    spacing = "xs", 
+    width = "auto", 
+    align = "c", 
+    rownames = FALSE, 
+    colnames = TRUE, 
+    digits = NULL, 
+    na = "na"
+  )
+  
+  output$downloadButtonTSV <- renderUI({
+    req(dAZMetDataPreview())
+    downloadButton(outputId = "downloadTSV", label = "Download .tsv", class = "btn btn-default btn-blue", type = "button")
+  })
+  
+  output$downloadTSV <- downloadHandler(
+    filename = function() {
+      paste0(input$azmetStation, input$plantingDate, "to", input$endDate, ".tsv")
+    },
+    content = function(file) {
+      vroom::vroom_write(x = dAZMetDataPreview(), file = file, delim = "\t") # Figure out whether to select here or in `fxnCalculateETc.R`
+    }
+  )
   
   output$tableCaption <- renderUI({
     tableCaption()

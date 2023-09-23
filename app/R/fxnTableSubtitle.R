@@ -9,7 +9,7 @@ fxnTableSubtitle <- function(azmetStation) {
     htmltools::p(
       htmltools::HTML(
         paste(
-          "Based on evapotranspiration data from the AZMet", azmetStation, "station from", gsub(" 0", " ", format((Sys.Date() - 7), "%B %d, %Y")), "through", gsub(" 0", " ", format((Sys.Date() - 1), "%B %d, %Y")), 
+          "Based on data from the AZMet", azmetStation, "station since", gsub(" 0", " ", format((Sys.Date() - 7), "%B %d, %Y")), "and through", gsub(" 0", " ", format((Sys.Date() - 1), "%B %d, %Y")), 
           sep = " "
         )
       ), 

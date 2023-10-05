@@ -40,10 +40,12 @@ fxnAZMetDataPreview <- function(dCalculateETc, timeStep) {
         c("eto_azmet_in", "eto_pen_mon_in", "meta_bat_volt_max", "meta_bat_volt_mean", "meta_bat_volt_min", "precip_total_in", "sol_rad_total", "sol_rad_total_ly", "vp_actual_max", "vp_actual_mean", "vp_actual_min", "vp_deficit_mean"), 
         \(x) format(x, nsmall = 2)
       )) %>%
+      
       # Specific to this Shiny app -->
       dplyr::mutate(days_since_planting = format(x = days_since_planting, nsmall = 0)) %>%
-      dplyr::select(meta_station_name, date_doy, date_year, datetime, eto_pen_mon_in, precip_total_in, days_since_planting) %>%
+      dplyr::select(meta_station_name, date_doy, date_year, datetime, eto_pen_mon_in, eto_pen_mon_in_cumsum, precip_total_in, precip_total_in_cumsum, days_since_planting, kc) %>%
       # <--
+      
       dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
   }
   

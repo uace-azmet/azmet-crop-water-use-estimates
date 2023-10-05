@@ -39,7 +39,7 @@ ui <- htmltools::htmlTemplate(
       
       verticalLayout(
         helpText(em(
-          "Select an AZMet station, specify the crop, and set the planting and end dates for the period of interest. Then, click or tap 'Estimate Water Use'."
+          "Select an AZMet station, specify the annual crop, and set the planting and end dates for the period of interest. Then, click or tap 'Estimate Water Use'."
         )),
         
         br(),
@@ -113,7 +113,6 @@ ui <- htmltools::htmlTemplate(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableCaption"))
       ),
       
-      #br(),
       fluidRow(
         column(width = 11, align = "left", offset = 1, uiOutput(outputId = "downloadButtonTSV"))
       ),

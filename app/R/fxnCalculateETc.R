@@ -9,49 +9,24 @@
 fxnCalculateETc <- function(dAZMetDataELT, annualCrop, growingSeasonLength) {
   dCalculateETc <- dAZMetDataELT %>%
     dplyr::mutate(days_since_planting = seq(from = 0, to = nrow(dAZMetDataELT) - 1)) %>%
-    dplyr::mutate(
-      kc = dplyr::if_else(
-        days_since_planting > growingSeasonLength, NA_real_, dplyr::if_else(
-          days_since_planting <= 0, 
-          NA_real_, 
-          purrr::map_dbl(.x = days_since_planting, .f = function(.x, annualCrop = annualCrop) {
-            #.x + 1
-            cropCoefficientCurves$cropCoefficient[
-              which(cropCoefficientCurves$crop == annualCrop & cropCoefficientCurves$growingDay == .x)
-            ]
-          })
-          #days_since_planting <= 0, NA_real_, fxnAssignKc(days_since_planting))
-          #cropCoefficientCurves$cropCoefficient[which(
-          #  cropCoefficientCurves$crop == annualCrop & cropCoefficientCurves$growingDay == days_since_planting
-          #)]
-        )
-        #dplyr::if_else(days_since_planting <= 0, NA_real_, 
-        #  cropCoefficientCurves$cropCoefficient[
-        #    which(
-        #      cropCoefficientCurves$crop == annualCrop & 
-        #        cropCoefficientCurves$growingDay == days_since_planting
-        #    )
-        #  ]
-    #    )
-      )
-    ) %>%
-        
-        #if (days_since_planting > growingSeasonLength) {
-        #  kc <- NA
-        #} else if (daysSincePlantingDifference <= 0) {
-        #  kc <- NA
-        #} else {
-        #  kc <- cropCoefficientCurves$cropCoefficient[
-        #    which(cropCoefficientCurves$crop == inCrop &
-        #            cropCoefficientCurves$growingDay == daysSincePlantingDifference)
-        #  ]
-        #}
-        
-    #  ) fxnAssignKc(annualCrop = annualCrop, growingSeasonLength = growingSeasonLength)) %>%
-    #dplyr::mutate(water_use_in = eto_pen_mon_in * kc)
+    
+    # Assign daily value for crop coefficient based on user input
+    dplyr::mutate(kc = purrr::map(.x = days_since_planting, .f = function(.x) {
+      if (.x > growingSeasonLength | .x <= 0) {
+        NA_real_
+      } else {
+        cropCoefficientCurves$cropCoefficient[which(
+          cropCoefficientCurves$crop == annualCrop & cropCoefficientCurves$growingDay == .x
+        )]
+      }
+    })) %>%
+    
+    dplyr::mutate(kc = as.numeric(kc)) %>%
+    dplyr::mutate(water_use_in = kc * eto_pen_mon_in) %>%
     dplyr::arrange(dplyr::desc(datetime)) %>%
     dplyr::mutate(precip_total_in_cumsum = cumsum(precip_total_in)) %>%
-    dplyr::mutate(eto_pen_mon_in_cumsum = cumsum(eto_pen_mon_in))
+    dplyr::mutate(eto_pen_mon_in_cumsum = cumsum(eto_pen_mon_in)) %>%
+    dplyr::mutate(water_use_in_cumsum = cumsum(water_use_in))
   
   return(dCalculateETc)
 }

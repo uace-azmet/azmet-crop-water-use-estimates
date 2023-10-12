@@ -1,8 +1,8 @@
-# fxnTableCaption: Build caption for HTML table based on user input
-# 
-# @param: azmetStation - AZMet station selected by user
-# @param: annualCrop - annual crop selected by user
-# @return: tableCaption - caption for HTML table based on user input
+#' `fxnTableCaption.R` - Build caption for HTML table based on user input
+#' 
+#' @param azmetStation - AZMet station selected by user
+#' @param annualCrop - Annual crop selected by user
+#' @return `tableCaption` - Caption for HTML table based on user input
 
 
 fxnTableCaption <- function(azmetStation, annualCrop) {

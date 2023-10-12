@@ -1,8 +1,8 @@
-# fxnAZMetDataPreview: Format downloaded and transformed AZMet daily data for HTML table preview
-# 
-# @param: dCalculateETc - downloaded and transformedAZMet daily data
-# @param: timeStep - AZMet data time step
-# @return: dAZMetDataPreview - data table formatted for HTML table
+#' `fxnAZMetDataPreview.R` - Format downloaded and transformed AZMet daily data for HTML table preview
+#' 
+#' @param dCalculateETc - AZMet daily data from `fxnCalculateETc.R`
+#' @param timeStep - AZMet data time step
+#' @return `dAZMetDataPreview` - Data table formatted for HTML table
 
 
 fxnAZMetDataPreview <- function(dCalculateETc, timeStep) {

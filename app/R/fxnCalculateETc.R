@@ -1,9 +1,9 @@
-# fxnCalculateETc: estimate daily crop water use based on ETo values
-# 
-# @param: dAZMetDataELT - AZMet data from `fxnAZMetDataELT.R`
-# @param: annualCrop - annual crop selected by user
-# @param: growingSeasonLength - growing season length based on annual crop selected by user, defined in `app.R`
-# @return: dCalculateETc - AZMet data with daily individual and cummulative ETc values
+#' `fxnCalculateETc.R` - Estimate daily crop water use based on ETo values
+#' 
+#' @param dAZMetDataELT - AZMet daily data from `fxnAZMetDataELT.R`
+#' @param annualCrop - Annual crop selected by user
+#' @param growingSeasonLength - Growing season length based on annual crop selected by user, defined in `app.R`
+#' @return `dCalculateETc` - AZMet data with daily individual and cumulative ETc values
 
 
 fxnCalculateETc <- function(dAZMetDataELT, annualCrop, growingSeasonLength) {

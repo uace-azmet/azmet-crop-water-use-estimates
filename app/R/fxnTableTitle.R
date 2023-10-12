@@ -1,7 +1,7 @@
-# fxnTableTitle: Build title for HTML table based on user input
-# 
-# @param: annualCrop - annual crop selected by user
-# @return: tableTitle - title for HTML table based on user input
+#' `fxnTableTitle.R` - Build title for HTML table based on user input
+#' 
+#' @param annualCrop - Annual crop selected by user
+#' @return `tableTitle` - Title for HTML table based on user input
 
 
 fxnTableTitle <- function(annualCrop) {

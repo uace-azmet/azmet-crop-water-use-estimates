@@ -1,10 +1,10 @@
-# fxnAZMetDataELT: AZMet hourly or daily data download from API-based database
-# 
-# @param: station - AZMet station name
-# @param: timeStep - AZMet data time step
-# @param: startDate - start date of period of interest
-# @param: endDate - end date of period of interest
-# @return: dAZMetDataELT - transformed data table
+#' `fxnAZMetDataELT.R` - AZMet hourly or daily data download from API-based database
+#' 
+#' @param azmetStation - AZMet station name
+#' @param timeStep - AZMet data time step
+#' @param startDate - Start date of period of interest
+#' @param endDate - End date of period of interest
+#' @return `dAZMetDataELT` - Transformed data table
 
 
 fxnAZMetDataELT <- function(azmetStation, timeStep, startDate, endDate) {

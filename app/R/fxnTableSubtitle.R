@@ -1,7 +1,7 @@
-# fxnTableSubtitle: Build subtitle for HTML table based on current date
-# 
-# @param: azmetStation - AZMet station selected by user
-# @return: tableSubtitle - subtitle for HTML table based on current date
+#' `fxnTableSubtitle.R` - Build subtitle for HTML table based on current date
+#' 
+#' @param azmetStation - AZMet station selected by user
+#' @return `tableSubtitle` - Subtitle for HTML table based on current date
 
 
 fxnTableSubtitle <- function(azmetStation) {

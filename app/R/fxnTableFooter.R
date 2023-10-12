@@ -1,10 +1,10 @@
-# fxnTableFooter: Build footer for HTML table based on user input
-# 
-# @param: annualCrop - annual crop selected by user
-# @param: plantingDate - planting date selected by user
-# @param: endDate - end date selected by user
-# @param: growingSeasonLength - growing season length based on annual crop selected by user
-# @return: tableFooter - footer for HTML table based on user input
+#' `fxnTableFooter.R` - Build footer for HTML table based on user input
+#' 
+#' @param annualCrop - Annual crop selected by user
+#' @param plantingDate - Planting date selected by user
+#' @param endDate - End date selected by user
+#' @param growingSeasonLength - Growing season length based on annual crop selected by user
+#' @return `tableFooter` - Footer for HTML table based on user input
 
 
 fxnTableFooter <- function(annualCrop, plantingDate, endDate, growingSeasonLength) {

@@ -209,12 +209,12 @@ server <- function(input, output, session) {
   
   # Build table subtitle
   tableSubtitle <- eventReactive(input$estimateWaterUse, {
-    tableSubtitle <- fxnTableSubtitle(azmetStation = input$azmetStation)
+    tableSubtitle <- fxnTableSubtitle(plantingDate = input$plantingDate, endDate = input$endDate)
   })
   
   # Build table title
   tableTitle <- eventReactive(input$estimateWaterUse, {
-    tableTitle <- fxnTableTitle(annualCrop = input$annualCrop)
+    tableTitle <- fxnTableTitle(azmetStation = input$azmetStation, annualCrop = input$annualCrop)
   })
   
   # Outputs -----

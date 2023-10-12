@@ -1,15 +1,16 @@
 #' `fxnTableSubtitle.R` - Build subtitle for HTML table based on current date
 #' 
-#' @param azmetStation - AZMet station selected by user
+#' @param startDate - Start date of period of interest
+#' @param endDate - End date of period of interest
 #' @return `tableSubtitle` - Subtitle for HTML table based on current date
 
 
-fxnTableSubtitle <- function(azmetStation) {
+fxnTableSubtitle <- function(plantingDate, endDate) {
   tableSubtitle <- 
     htmltools::p(
       htmltools::HTML(
         paste(
-          "Based on data from the AZMet", azmetStation, "station since", gsub(" 0", " ", format((Sys.Date() - 7), "%B %d, %Y")), "and through", gsub(" 0", " ", format((Sys.Date() - 1), "%B %d, %Y")), 
+          "Since", gsub(" 0", " ", format(plantingDate, "%B %d, %Y")), "through", gsub(" 0", " ", format(endDate, "%B %d, %Y")), 
           sep = " "
         )
       ), 

@@ -107,6 +107,11 @@ ui <- htmltools::htmlTemplate(
       
       br(),
       fluidRow(
+        column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "summaryText"))
+      ),
+      
+      br(), br(),
+      fluidRow(
         column(width = 11, align = "left", offset = 1, tableOutput(outputId = "dataTablePreview"))
       ), 
       
@@ -183,9 +188,20 @@ server <- function(input, output, session) {
     ]
   })
   
+  # Build summary text
+  summaryText <- eventReactive(dCalculateETc(), {
+    fxnSummaryText(
+      azmetStation = input$azmetStation,
+      annualCrop = input$annualCrop,
+      plantingDate = input$plantingDate,
+      endDate = input$endDate,
+      dCalculateETc = dCalculateETc()
+    )
+  })
+  
   # Build table caption
   tableCaption <- eventReactive(input$estimateWaterUse, {
-    tableCaption <- fxnTableCaption(
+    fxnTableCaption(
       azmetStation = input$azmetStation,
       annualCrop = input$annualCrop
     )
@@ -193,7 +209,7 @@ server <- function(input, output, session) {
   
   # Build table footer
   tableFooter <- eventReactive(input$estimateWaterUse, {
-    tableFooter <- fxnTableFooter(
+    fxnTableFooter(
       annualCrop = input$annualCrop,
       plantingDate = input$plantingDate,
       endDate = input$endDate,
@@ -201,20 +217,14 @@ server <- function(input, output, session) {
     )
   })
   
-  # Build table footer help text
-  output$tableFooterHelpText <- renderUI({
-    req(dAZMetDataELT())
-    helpText(em("Scroll down over the following text to view additional information."))
-  })
-  
   # Build table subtitle
   tableSubtitle <- eventReactive(input$estimateWaterUse, {
-    tableSubtitle <- fxnTableSubtitle(plantingDate = input$plantingDate, endDate = input$endDate)
+    fxnTableSubtitle(plantingDate = input$plantingDate, endDate = input$endDate)
   })
   
   # Build table title
   tableTitle <- eventReactive(input$estimateWaterUse, {
-    tableTitle <- fxnTableTitle(azmetStation = input$azmetStation, annualCrop = input$annualCrop)
+    fxnTableTitle(azmetStation = input$azmetStation, annualCrop = input$annualCrop)
   })
   
   # Outputs -----
@@ -247,12 +257,21 @@ server <- function(input, output, session) {
     }
   )
   
+  output$summaryText <- renderUI({
+    summaryText()
+  })
+  
   output$tableCaption <- renderUI({
     tableCaption()
   })
   
   output$tableFooter <- renderUI({
     tableFooter()
+  })
+  
+  output$tableFooterHelpText <- renderUI({
+    req(dAZMetDataELT())
+    helpText(em("Scroll down over the following text to view additional information."))
   })
   
   output$tableSubtitle <- renderUI({

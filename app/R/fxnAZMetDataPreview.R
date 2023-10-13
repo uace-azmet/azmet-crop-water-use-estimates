@@ -43,7 +43,16 @@ fxnAZMetDataPreview <- function(dCalculateETc, timeStep) {
       
       # Specific to this Shiny app -->
       dplyr::mutate(days_since_planting = format(x = days_since_planting, nsmall = 0)) %>%
-      dplyr::select(meta_station_name, date_doy, date_year, datetime, eto_pen_mon_in, eto_pen_mon_in_cumsum, precip_total_in, precip_total_in_cumsum, days_since_planting, kc, water_use_in, water_use_in_cumsum) %>%
+      dplyr::select(meta_station_name, datetime, water_use_in_cumsum, water_use_in, kc, eto_pen_mon_in, eto_pen_mon_in_cumsum, precip_total_in, precip_total_in_cumsum, days_since_planting) %>%
+      dplyr::rename(
+        `AZMet Station` = meta_station_name,
+        Date = datetime,
+        `Cumulative Water Use (inches)` = water_use_in_cumsum,
+        `Daily Water Use (inches)` = water_use_in,
+        `Crop Coefficient` = kc,
+        `Daily Evapotranspiration (inches)` = eto_pen_mon_in,
+        `Cumulative Evapotranspiration (inches)` = eto_pen_mon_in_cumsum
+      ) %>%
       # <--
       
       dplyr::mutate(dplyr::across(dplyr::everything(), as.character))

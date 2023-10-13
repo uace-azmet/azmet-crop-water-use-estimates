@@ -27,7 +27,7 @@ fxnSummaryText <- function(azmetStation, annualCrop, plantingDate, endDate, dCal
             
             sep = " "
           )),
-          "This total is based on values in the following table.",
+          "This cumulative total is based on values in the following table.",
           
           sep = " "
         )

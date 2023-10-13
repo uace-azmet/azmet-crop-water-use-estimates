@@ -111,10 +111,16 @@ ui <- htmltools::htmlTemplate(
       ),
       
       br(), br(),
+      
+      fluidRow(
+        column(width = 11, align = "left", offset = 1, tableOutput(outputId = "tableHelpText"))
+      ), 
+      
       fluidRow(
         column(width = 11, align = "left", offset = 1, tableOutput(outputId = "dataTablePreview"))
       ), 
       
+      br(),
       fluidRow(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableCaption"))
       ),
@@ -128,7 +134,6 @@ ui <- htmltools::htmlTemplate(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableFooterHelpText"))
       ),
       
-      br(),
       fluidRow(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableFooter"))
       ),
@@ -201,10 +206,7 @@ server <- function(input, output, session) {
   
   # Build table caption
   tableCaption <- eventReactive(input$estimateWaterUse, {
-    fxnTableCaption(
-      azmetStation = input$azmetStation,
-      annualCrop = input$annualCrop
-    )
+    fxnTableCaption()
   })
   
   # Build table footer
@@ -215,6 +217,16 @@ server <- function(input, output, session) {
       endDate = input$endDate,
       growingSeasonLength = growingSeasonLength()
     )
+  })
+  
+  # Build table footer help text
+  tableFooterHelpText <- eventReactive(input$estimateWaterUse, {
+    fxnTableFooterHelpText()
+  })
+  
+  # Build table help text
+  tableHelpText <- eventReactive(input$estimateWaterUse, {
+    fxnTableHelpText()
   })
   
   # Build table subtitle
@@ -270,8 +282,11 @@ server <- function(input, output, session) {
   })
   
   output$tableFooterHelpText <- renderUI({
-    req(dAZMetDataELT())
-    helpText(em("Scroll down over the following text to view additional information."))
+    tableFooterHelpText()
+  })
+  
+  output$tableHelpText <- renderUI({
+    tableHelpText()
   })
   
   output$tableSubtitle <- renderUI({

@@ -22,12 +22,19 @@ fxnSummaryText <- function(azmetStation, annualCrop, plantingDate, endDate, dCal
           gsub(" 0", " ", format(endDate, "%B %d, %Y")),
           "is",
           strong(paste(
-            max(dCalculateETc$water_use_in_cumsum, na.rm = TRUE),
+            format(x = max(dCalculateETc$water_use_in_cumsum, na.rm = TRUE), nsmall = 2),
             "inches.",
             
             sep = " "
           )),
-          "This cumulative total is based on values in the following table.",
+          "Total precipitation over this period is",
+          strong(paste(
+            format(x = max(dCalculateETc$precip_total_in_cumsum, na.rm = TRUE), nsmall = 2),
+            "inches.",
+            
+            sep = " "
+          )),
+          "These cumulative totals are based on values in the following table.",
           
           sep = " "
         )

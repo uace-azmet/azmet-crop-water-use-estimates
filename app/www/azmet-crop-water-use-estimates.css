@@ -40,6 +40,14 @@
   color: #828282; font-style: italic;
 }
 
+.table-footer-help-text {
+  color: #828282; font-style: italic;
+}
+
+.table-help-text {
+  color: #828282; font-style: italic;
+}
+
 .table-subtitle {
   color: #343a40; font-weight: plain; margin-top: 0;
 }

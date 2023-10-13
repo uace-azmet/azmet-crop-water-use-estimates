@@ -1,13 +1,13 @@
-#' `fxnTableCaption.R` - Build caption for HTML table based on user input
+#' `fxnTableCaption.R` - Build caption for HTML table
 #' 
-#' @return `tableCaption` - Caption for HTML table based on user input
+#' @return `tableCaption` - Caption for HTML table
 
 
-fxnTableCaption <- function(azmetStation, annualCrop) {
+fxnTableCaption <- function() {
   tableCaption <- 
     htmltools::p(
       htmltools::HTML(
-        "Scroll over the table to view additional rows and columns. Click or tap the button below to download a file of the previewed data with tab-separated values."
+        "Click or tap the button below to download a file of the above data with tab-separated values."
       ), 
       
       class = "table-caption"

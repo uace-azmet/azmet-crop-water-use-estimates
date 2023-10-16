@@ -20,10 +20,6 @@
   position: sticky; top: 0;
 }
 
-#tableTitle {
- color: red !important; font-weight: bold !important; margin-top: 0 !important; margin-bottom: 0 !important;
-}
-
 .shiny-output-error-datepicker {
   background-color: #dee2e6; border: 1px solid rgba(0,0,0,.125); border-radius: 0px; color: #343a40 !important; font-style: italic; padding: 20px;
 }
@@ -34,6 +30,30 @@
 
 .shiny-notification {
   background-color: rgba(129,211,235,0.9) !important; border: none !important; box-shadow: 1px 2px rgba(0,0,0,0.1) !important; color: #1E5288 !important; font-style: italic !important; font-weight: bold !important; position: fixed !important; top: calc(50%) !important; left: calc(50% - 100px) !important;
+}
+
+.summary-text {
+  color: #343a40; font-weight: plain; margin-bottom: 0; margin-top: 0;
+}
+
+.table-caption {
+  color: #828282; font-style: italic;
+}
+
+.table-footer-help-text {
+  color: #828282; font-style: italic;
+}
+
+.table-help-text {
+  color: #828282; font-style: italic;
+}
+
+.table-subtitle {
+  color: #343a40; font-weight: plain; margin-top: 0;
+}
+
+.table-title {
+  color: #343a40; font-weight: bold; margin-bottom: 0; margin-top: 0;
 }
 
 /* id */

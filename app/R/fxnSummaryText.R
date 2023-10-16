@@ -28,12 +28,12 @@ fxnSummaryText <- function(azmetStation, annualCrop, plantingDate, endDate, dCal
             sep = " "
           )),
           "Total precipitation over this period is",
-          strong(paste(
+          paste(
             format(x = max(dCalculateETc$precip_total_in_cumsum, na.rm = TRUE), nsmall = 2),
             "inches.",
             
             sep = " "
-          )),
+          ),
           "These cumulative totals are based on values in the following table.",
           
           sep = " "

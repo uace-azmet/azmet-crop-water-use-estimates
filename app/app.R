@@ -120,7 +120,7 @@ ui <- htmltools::htmlTemplate(
         column(width = 11, align = "left", offset = 1, tableOutput(outputId = "dataTablePreview"))
       ), 
       
-      br(),
+      br(), br(),
       fluidRow(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableCaption"))
       ),
@@ -151,6 +151,14 @@ server <- function(input, output, session) {
   
   # AZMet data ELT
   dAZMetDataELT <- eventReactive(input$estimateWaterUse, {
+    validate(
+      need(
+        input$plantingDate < input$endDate, 
+        "Please select a 'Planting Date' that is earlier than the 'End Date'."
+      ),
+      errorClass = "datepickerBlank"
+    )
+    
     idPreview <- showNotification(
       ui = "Estimating water use . . .", 
       action = NULL, 
@@ -205,12 +213,12 @@ server <- function(input, output, session) {
   })
   
   # Build table caption
-  tableCaption <- eventReactive(input$estimateWaterUse, {
+  tableCaption <- eventReactive(dCalculateETc(), {
     fxnTableCaption()
   })
   
   # Build table footer
-  tableFooter <- eventReactive(input$estimateWaterUse, {
+  tableFooter <- eventReactive(dCalculateETc(), {
     fxnTableFooter(
       annualCrop = input$annualCrop,
       plantingDate = input$plantingDate,
@@ -220,22 +228,30 @@ server <- function(input, output, session) {
   })
   
   # Build table footer help text
-  tableFooterHelpText <- eventReactive(input$estimateWaterUse, {
+  tableFooterHelpText <- eventReactive(dCalculateETc(), {
     fxnTableFooterHelpText()
   })
   
   # Build table help text
-  tableHelpText <- eventReactive(input$estimateWaterUse, {
+  tableHelpText <- eventReactive(dCalculateETc(), {
     fxnTableHelpText()
   })
   
   # Build table subtitle
-  tableSubtitle <- eventReactive(input$estimateWaterUse, {
+  tableSubtitle <- eventReactive(dCalculateETc(), {
     fxnTableSubtitle(plantingDate = input$plantingDate, endDate = input$endDate)
   })
   
   # Build table title
   tableTitle <- eventReactive(input$estimateWaterUse, {
+    validate(
+      need(
+        input$plantingDate < input$endDate, 
+        "Please select a 'Planting Date' that is earlier than the 'End Date'."
+      ),
+      errorClass = "datepicker"
+    )
+    
     fxnTableTitle(azmetStation = input$azmetStation, annualCrop = input$annualCrop)
   })
   
@@ -257,12 +273,19 @@ server <- function(input, output, session) {
   
   output$downloadButtonTSV <- renderUI({
     req(dAZMetDataPreview())
-    downloadButton(outputId = "downloadTSV", label = "Download .tsv", class = "btn btn-default btn-blue", type = "button")
+    downloadButton(
+      outputId = "downloadTSV", 
+      label = "Download .tsv", 
+      class = "btn btn-default btn-blue", 
+      type = "button"
+    )
   })
   
   output$downloadTSV <- downloadHandler(
     filename = function() {
-      paste0(input$azmetStation, input$plantingDate, "to", input$endDate, ".tsv")
+      paste0(
+        input$azmetStation, " ", input$annualCrop, " water use estimates ", input$plantingDate, " to ", input$endDate, ".tsv"
+      )
     },
     content = function(file) {
       vroom::vroom_write(x = dAZMetDataPreview(), file = file, delim = "\t") # Figure out whether to select here or in `fxnCalculateETc.R`

@@ -2,11 +2,6 @@
 
 # Shiny app to estimate crop water use from measurements at AZMet stations
 
-# Add code for the following
-# 
-# 'azmet-shiny-template.html': <!-- Google tag (gtag.js) -->
-# 'azmet-shiny-template.html': <!-- CSS specific to this AZMet Shiny app -->
-
 
 # Libraries
 library(azmetr)

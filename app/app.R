@@ -279,7 +279,7 @@ server <- function(input, output, session) {
   output$downloadTSV <- downloadHandler(
     filename = function() {
       paste0(
-        input$azmetStation, " ", input$annualCrop, " water use estimates ", input$plantingDate, " to ", input$endDate, ".tsv"
+        "AZMet ", input$azmetStation, " ", input$annualCrop, " water use estimates ", input$plantingDate, " to ", input$endDate, ".tsv"
       )
     },
     content = function(file) {

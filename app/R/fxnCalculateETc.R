@@ -21,12 +21,14 @@ fxnCalculateETc <- function(dAZMetDataELT, annualCrop, growingSeasonLength) {
       }
     })) %>%
     
+    dplyr::mutate(precip_total_in = round(precip_total_in, digits = 2)) %>%
+    dplyr::mutate(eto_pen_mon_in = round(eto_pen_mon_in, digits = 2)) %>%
     dplyr::mutate(kc = as.numeric(kc)) %>%
     dplyr::mutate(water_use_in = round((kc * eto_pen_mon_in), digits = 2)) %>%
     dplyr::arrange(dplyr::desc(datetime)) %>%
-    dplyr::mutate(precip_total_in_cumsum = cumsum(precip_total_in)) %>%
-    dplyr::mutate(eto_pen_mon_in_cumsum = cumsum(eto_pen_mon_in)) %>%
-    dplyr::mutate(water_use_in_cumsum = cumsum(water_use_in))
+    dplyr::mutate(precip_total_in_cumsum = round(cumsum(precip_total_in), digits = 2)) %>%
+    dplyr::mutate(eto_pen_mon_in_cumsum = round(cumsum(eto_pen_mon_in), digits = 2)) %>%
+    dplyr::mutate(water_use_in_cumsum = round(cumsum(water_use_in), digits = 2))
   
   return(dCalculateETc)
 }

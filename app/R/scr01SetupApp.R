@@ -19,3 +19,6 @@ stationNames <- vroom::vroom(
   col_names = TRUE, 
   show_col_types = FALSE
 )
+
+# Set limit to user date selection
+databaseStart <- lubridate::as_date("2021-01-01")

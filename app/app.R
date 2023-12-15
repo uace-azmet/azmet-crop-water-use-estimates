@@ -11,6 +11,7 @@ library(lubridate)
 library(purrr)
 library(shiny)
 library(stringr)
+library(tidyr)
 library(vroom)
 
 # Functions
@@ -35,7 +36,7 @@ ui <- htmltools::htmlTemplate(
       
       verticalLayout(
         helpText(em(
-          "Select an AZMet station, specify the annual crop, and set the planting and end dates for the period of interest. Then, click or tap 'Estimate Water Use'."
+          "Select an AZMet station, specify the annual crop, and set the planting and end dates for the period of interest. Then, click or tap 'ESTIMATE WATER USE'."
         )),
         
         br(),

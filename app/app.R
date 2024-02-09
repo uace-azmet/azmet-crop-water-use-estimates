@@ -148,11 +148,7 @@ server <- function(input, output, session) {
   # AZMet data ELT
   dAZMetDataELT <- eventReactive(input$estimateWaterUse, {
     validate(
-      need(
-        input$plantingDate < input$endDate, 
-        "Please select a 'Planting Date' that is earlier than the 'End Date'."
-      ),
-      errorClass = "datepickerBlank"
+      need(expr = input$plantingDate < input$endDate, message = FALSE)
     )
     
     idPreview <- showNotification(

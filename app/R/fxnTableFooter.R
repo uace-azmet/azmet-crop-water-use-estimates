@@ -101,7 +101,7 @@ fxnTableFooter <- function(annualCrop, plantingDate, endDate, growingSeasonLengt
           br(), br(),
           " Daily AZMet data are from ", urlAPI, " and accessed using the ", urlAzmetr, " R package. Table values from recent dates may be based on provisional data. More information about ", webpageDataVariables, ", ", webpageNetworkMap, ", and ", webpageStationMetadata, " is available on the ", webpageAZMet, ". Users of AZMet data and data applications assume all risks of its use.",
           br(), br(),
-          "To cite the above AZMet data, please use: 'Arizona Meteorological Network (", todayYear, ") Arizona Meteorological Network (AZMet) Data. https:://azmet.arizona.edu. Accessed ", todayDate, "', along with 'Arizona Meteorological Network (", todayYear, ") Crop Water Use Estimates. https://viz.datascience.arizona.edu/azmet/azmet-crop-water-use-estimates. Accessed ", todayDate, "'.",
+          "To cite the above AZMet data, please use: 'Arizona Meteorological Network (", todayYear, ") Arizona Meteorological Network (AZMet) Data. https://azmet.arizona.edu. Accessed ", todayDate, "', along with 'Arizona Meteorological Network (", todayYear, ") Crop Water Use Estimates. https://viz.datascience.arizona.edu/azmet/azmet-crop-water-use-estimates. Accessed ", todayDate, "'.",
           br(), br(),
           "For information on how this webpage is put together, please visit the ", webpageCode, " for this tool."
         )
